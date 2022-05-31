@@ -69,7 +69,7 @@ Included in the codebase is an implementation of the Numpad environment (the lon
 2. Continuous control version, with continuous actions.
 3. Mixed version, with discrete actions mapping onto specific continuous actions.
 
-Code relating to the Numpad environment implementation can be found under: `rl_thesis/environments/`
+Code relating to the Numpad environment implementation can be found under: `rl_thesis/environments/`. For a stand-alone implementation of these Numpad environments as a python package we refer to our other repository: https://github.com/Syrlander/numpad-gym.
 
 ### Testing
 As we provide our own implementations of the Numpad discrete and continuous environments, we have created an associated suite of unit and integration tests which can be ran using.
