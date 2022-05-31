@@ -17,7 +17,7 @@ The following provides a general overview of the code:
     * `models`: directory of all models available via the CLI, each following our API design such that they can be trained, loaded, rendered, and evaluated.
     * `policies`: policy files relating to our DQN/DRQN implementation, along with a utility implementation of a fully-connected neural network used in other models.
     * `tests`: test cases relating to variuous parts of the codebase, implemented using `pytest`
-    * `algorithms`: individual custom policies (only includes random model) and the replay experience buffer used throughout multiple models. (MOVE THIS UNDER `policies` IF WE HAVE TIME - SEEMS A BIT MESSY?!)
+    * `algorithms`: random agent/policy compatible with the stable-baselines3 interface and the replay experience buffer used throughout multiple models.
     * `utils`: general utility functions for capturing various PyTorch metrics and individual layers.
     * `evaluate.py`: functions used to evalute different models.
     * `plotting.py`: functions used to plot graphs of different model outputs and metrics.
