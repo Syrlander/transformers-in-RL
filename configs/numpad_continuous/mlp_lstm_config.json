@@ -1,0 +1,12 @@
+{
+    "input_size": 14,
+    "layer_sizes_before_lstm": [
+        256,
+        256
+    ],
+    "lstm_hidden_size": 256,
+    "n_lstm_layers": 1,
+    "layer_sizes_after_lstm": [],
+    "output_size": 8,
+    "device": "cuda"
+}

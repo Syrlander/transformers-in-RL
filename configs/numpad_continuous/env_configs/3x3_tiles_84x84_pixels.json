@@ -1,0 +1,7 @@
+{
+    "tile_size": 16,
+    "spacing_size": 6,
+    "t_max": 200,
+    "observation_mode": "ram",
+    "task_cues": true
+}

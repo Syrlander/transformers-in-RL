@@ -1,0 +1,209 @@
+{
+  "device": "cpu",
+  "verbose": 0,
+  "seed": 847592,
+  "only_save_best": false,
+  "checkpoint_freq": 2000,
+  "normalize": false,
+  "n_envs": 1,
+  "n_eval_episodes": 50,
+  "eval_freq": 1000,
+  "total_timesteps": 1500000,
+  "models_dir": "models",
+  "log_dir": "dreamer_logs",
+  "prefill": 10000,
+  "debug": true,
+  "render_size": [
+    64,
+    64
+  ],
+  "action_repeat": 1,
+  "log_every": 400,
+  "train_every": 5,
+  "train_steps": 1,
+  "expl_until": 0,
+  "pretrain": 1,
+  "replay": {
+    "capacity": 2000000,
+    "prioritized_replay_factor": 0.5,
+    "priority_min_reward": 20,
+    "favor_episode_ends": true
+  },
+  "dataset": {
+    "batch_size": 16,
+    "seq_len": 16,
+    "replace": false
+  },
+  "log_keys_video": [
+    "image"
+  ],
+  "log_keys_sum": "^$",
+  "log_keys_mean": "^$",
+  "log_keys_max": "^$",
+  "agent": {
+    "expl_behavior": "greedy",
+    "expl_noise": 0.0,
+    "eval_noise": 0,
+    "eval_state_mean": false,
+    "world_model": {
+      "grad_heads": [
+        "decoder",
+        "reward",
+        "discount"
+      ],
+      "pred_discount": true,
+      "clip_rewards": "tanh",
+      "discount": 0.995,
+      "recurrence_model": "rssm",
+      "rssm": {
+        "ensemble": 1,
+        "hidden_state_dim": 256,
+        "deterministic_state_dim": 256,
+        "model_state_size": 64,
+        "stoch_size": 16,
+        "discrete": 16,
+        "act_fn": "ELU",
+        "std_act": "sigmoid2",
+        "min_std": 0.1,
+        "action_space_size": 2
+      },
+      "encoder": {
+        "mlp_keys": [
+          "ram"
+        ],
+        "cnn_keys": [],
+        "act": "ELU",
+        "cnn_depth": 48,
+        "cnn_kernels": [
+          4,
+          4,
+          4,
+          4
+        ],
+        "cnn_strides": 2,
+        "mlp_layers": [
+          64
+        ],
+        "mlp_output_dim": 64
+      },
+      "decoder": {
+        "mlp_keys": [
+          "ram"
+        ],
+        "cnn_keys": [],
+        "act": "ELU",
+        "cnn_depth": 48,
+        "cnn_kernels": [
+          5,
+          5,
+          6,
+          6
+        ],
+        "mlp_layers": [
+          64,
+          64
+        ],
+        "model_state_size": 512
+      },
+      "reward_head": {
+        "hidden_layer_sizes": [
+          64,
+          64
+        ],
+        "input_dim": 512,
+        "output_dim": [],
+        "act_fn": "ELU",
+        "dist": "mse"
+      },
+      "discount_head": {
+        "hidden_layer_sizes": [
+          64,
+          64
+        ],
+        "input_dim": 512,
+        "output_dim": [],
+        "act_fn": "ELU",
+        "dist": "binary"
+      },
+      "loss_scales": {
+        "kl": 0.1,
+        "reward": 1.0,
+        "discount": 1.0,
+        "proprio": 1.0
+      },
+      "kl": {
+        "free": 0.0,
+        "forward": false,
+        "balance": 0.8,
+        "free_avg": true
+      },
+      "model_opt": {
+        "name": "AdamW",
+        "kw_args": {
+          "lr": 1e-4,
+          "eps": 1e-5,
+          "weight_decay": 1e-6
+        },
+        "clip": 100
+      }
+    },
+    "actor_critic": {
+      "actor": {
+        "hidden_layer_sizes": [
+          64,
+          64
+        ],
+        "input_dim": 512,
+        "act_fn": "ELU",
+        "dist": "auto",
+        "min_std": 0.1
+      },
+      "critic": {
+        "hidden_layer_sizes": [
+          64,
+          64
+        ],
+        "input_dim": 512,
+        "output_dim": [],
+        "act_fn": "ELU",
+        "dist": "mse"
+      },
+      "actor_opt": {
+        "clip": 100,
+        "kw_args": {
+          "lr": 8e-5,
+          "eps": 1e-5,
+          "weight_decay": 1e-6
+        }
+      },
+      "critic_opt": {
+        "clip": 100,
+        "kw_args": {
+          "lr": 2e-4,
+          "eps": 1e-5,
+          "weight_decay": 1e-6
+        }
+      },
+      "reward_normalizer": {
+        "shape": [],
+        "momentum": 1,
+        "scale": 1,
+        "eps": 1e-08
+      },
+      "discount_lambda": 0.95,
+      "imag_horizon": 15,
+      "actor_grad": "auto",
+      "actor_grad_mix": 0.1,
+      "actor_ent": 2e-3,
+      "slow_target": true,
+      "slow_target_update": 100,
+      "slow_target_fraction": 1,
+      "slow_baseline": true,
+      "reward_norm": {
+        "momentum": 1.0,
+        "scale": 1.0,
+        "eps": 1e-08
+      }
+    }
+  }
+}

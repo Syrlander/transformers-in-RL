@@ -1,0 +1,23 @@
+{
+    "verbose": true,
+    "total_timesteps": 1200000,
+    "batch_size": 8,
+    "update_sampling_strategy": 1,
+    "eval_freq": 10000,
+    "n_eval_episodes": 5,
+    "learning_starts": 1000,
+    "optimize_freq": 16,
+    "gradient_steps": 8,
+    "decay_function": 0,
+    "target_update": 600,
+    "device": "cuda",
+    "only_save_best": false,
+    "prioritized_replay_factor": 0.5,
+    "priority_min_reward": -200,
+    "eps_end_step": 24000,
+    "eps_start": 1,
+    "replay_total_timesteps": 20000,
+    "learning_rate": 0.001,
+    "optimizer": "Adam",
+    "gamma": 1
+}

@@ -1,0 +1,16 @@
+{
+    "verbose": true,
+    "total_timesteps": 1000,
+    "batch_size": 5,
+    "update_sampling_strategy": 1,
+    "eval_freq": 900,
+    "n_eval_episodes": 5,
+    "learning_starts": 800,
+    "optimize_freq": 850,
+    "decay_function": 0,
+    "target_update": 10000,
+    "gradient_steps": 8,
+    "device": "cpu",
+    "only_save_best": false,
+    "prioritized_replay_factor": 0.99
+}

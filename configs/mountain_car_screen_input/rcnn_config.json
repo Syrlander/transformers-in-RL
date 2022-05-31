@@ -1,0 +1,26 @@
+{
+    "filter_counts": [
+        32,
+        64,
+        64,
+        16
+    ],
+    "strides": [
+        4,
+        2,
+        1,
+        1
+    ],
+    "conv_sizes": [
+        8,
+        4,
+        3,
+        1
+    ],
+    "lstm_hidden_dim": 256,
+    "output_dim": 3,
+    "n_input_channels": 3,
+    "lstm_input_dim": 784,
+    "batch_size": 1,
+    "device": "cpu"
+}

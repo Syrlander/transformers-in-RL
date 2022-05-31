@@ -1,0 +1,17 @@
+{
+  "verbose": true,
+  "total_timesteps": 120000,
+  "batch_size": 128,
+  "update_sampling_strategy": 0,
+  "device": "cpu",
+  "n_eval_episodes": 5,
+  "learning_rate": 0.004,
+  "gamma": 0.98,
+  "target_update": 600,
+  "eps_start": 1,
+  "eps_end": 0.07,
+  "gradient_steps": 8,
+  "decay_function": 0,
+  "optimizer": "Adam",
+  "optimize_freq": 16
+}

@@ -1,0 +1,7 @@
+{
+    "numpad_size": 3,
+    "t_max": 200,
+    "seq_len": 4,
+    "flatten_state": true,
+    "seed": 1234
+}

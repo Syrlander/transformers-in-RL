@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+slurm_scripts/set_variables.sh
+
+# Images
+.frames/
+
+# vs code files
+.vscode
+
+# model and train logs
+train_reward_logs/*
+models/*
+dreamer_logs/
+eval_reward_logs/
+
+
