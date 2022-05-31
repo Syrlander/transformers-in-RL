@@ -39,13 +39,13 @@ During development we have primarily relied upon the usage of Python virtual env
 1. Install Python 3.6.8 using your systems package manager.
 2. Download repository:
 ```
-> git clone INSERT_REPO_URL
-> cd INSERT_REPO_NAME
+> git clone https://github.com/Syrlander/transformers-in-RL.git
+> cd transformers-in-RL
 ```
 3. Create and activate new virtual environment
 ```
-INSERT_REPO_NAME> python3.6 -m venv venv
-INSERT_REPO_NAME> source ./venv/bin/activate
+transformers-in-RL> python3.6 -m venv venv
+transformers-in-RL> source ./venv/bin/activate
 ```
 4. Install dependencies
 ```
@@ -85,18 +85,6 @@ Run test coverage:
 ```
 
 
-
-
 Github Cleanup ToDo:
 * [ ] README:
-  * [ ] Get rid of the `algorithms` directory under `rl_thesis`
   * [ ] How things can be ran from CLI and the different arguments (describe what they mean)
-  * [x] General project structure of where models, environments, and configuration files are located (and which ones we have)
-    * [x] Note that configuration files may not reflect the final hyperparameters of experiments and we refer to the Appendix of our report for the actual parameters used.
-  * [x] Tests and how to run them. (pytest on the tests directory or on single files or classes/methods within single files/classes.)
-  * [x] requirements.txt, how to install virtual environment and python version (due to the slurm cluster)
-* [ ] Remove files/directories relating to other Dreamer implementations.
-* [x] Create new repository
-  * [ ] Insert the new repo. name and url in the above instructions where needed (search for "INSERT_REPO_URL" and "INSERT_REPO_NAME")
-* [x] Describe the different branches
-* [ ] Remove `example_out_for_sharing.py` under `rl_thesis/dreamer/`
