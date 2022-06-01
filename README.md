@@ -30,7 +30,25 @@ The following provides a general overview of the code:
 * `requirements.txt`: file of all python3.6 dependencies required for running the project.
 
 ### API design
+Our framework has been designed so new models can easiler be added, such that they are compatible with the CLI. The design is best explained by going over the steps required to add a new model.
 
+0. All models are defined within `rl_thesis/models`. Where sub-directory names match those of the model names, denoted as `MODEL_NAME`, exposed through the CLI.
+1. Create a nwe sub-directory under `rl_thesis/models` with name `MODEL_NAME`. The directory should contain:
+    * `config.py`: should include a `Config` class inheriting from `BaseModelConfig`, where any attributes constitue hyperparameters of the model, along with their default values.
+    * `model.py`: should contain at least one class inheriting from `BaseModel`, requiring two methods to be implemented:
+        * `load(path, env=None, device="cpu")`: method for loading the model from a given file.
+        * `train(eval_env)`: method for training the model, where `eval_env` is the environment used for evaluation runs inbetween training.
+    * `__init__.py`: imports the model class and configuration classes and exposes them as `Model` and `Config` respectively.
+    * Each model can have separate files located within the `rl_thesis` directory, such as the ones for Dreamer, V-MPO/GTrXL, and DRQN. Such that the files under `rl_thesis/models` focus on implementing the training loop and loading, whilst the separate files provide the model implementation itself.
+2. Once setup the model is available in the CLI as `MODEL_NAME`, e.g. to train a model a command could be:
+```
+(venv)> rl_thesis train MODEL_NAME ENV_NAME --model_config JSON_CONFIG_FILE
+```
+which would train the `MODEL_NAME` model on the `ENV_NAME` environment using hyperparameters from the `JSON_CONFIG_FILE`. Note that hyperparameters from a JSON file only overwrite defaults of the model config, if a hyperparameter is not included in the JSON file the default value is used instead.
+
+With this API design models are independent of each other and the environments, where a large number of different experiments can be constructed directly from the CLI without changing the codebase.
+
+For a full description of all CLI arguments and options be refer to the below sections.
 
 ### Installation
 The project has been developed using Python 3.6.8.
@@ -61,13 +79,66 @@ If you encounter issues during installation of dependencies, it is recommended t
 ```
 
 ### Command-Line Interface (CLI)
+Here we provide a full description of each CLI argument and their options.
 
+Note that `MODEL_NAME` refers to any model within `rl_thesis/models/` and `ENV_NAME` is the name of any environment available through OpenAI gym or any variation of the below Numpad environments.
+
+#### Training
+```
+(venv)> rl_thesis train MODEL_NAME ENV_NAME
+```
+
+Options:
+* `--env_config`: JSON configuration file pass to initialization of the environment. Can be used to specify the Numpad configurations with sequence length, number of tiles, etc.
+* `--eval_env_config`: JSON configuration file pass to initialization of the evaluation environment.
+* `--model_config`: JSON configuration file of model hyperparameters.
+* `--policy`: Name of policy (policy network) to use along with the model. E.g. in the case of DQN/DRQN this can be specified to switch between MLP and CNN based policies.
+* `--policy_config`: JSON configuration file of policy (policy network) hyperparameters, e.g. number of network layers, layer sizes, etc.
+* `--rewards_dir` (default: `train_reward_logs/`): Path to directory of where to write episode returns of the training environment.
+* `--eval_rewards_dir` (default: `eval_reward_logs/`): Path to directory of where to write episode returns of the evaluation environment.
+
+#### Evaluation
+```
+(venv)> rl_thesis evaluate MODEL_NAME SAVE_MODEL_FILEPATH ENV_NAME NUM_TIMESTEPS
+```
+Where `SAVE_MODEL_FILEPATH` is the filepath to a model saved during training (e.g. either via the model obtaining a new highest return in the evaluation environment or by the checkpointed models), and `NUM_TIMESTEPS` being the number of tiem steps to evaluate the model for.
+
+Options:
+* `--env_normalize`: whether or not to normalize observations/rewards of the environment.
+* `--env_config_file`: JSON configuration file pass to initialization of the environment. Can be used to specify the Numpad configurations with sequence length, number of tiles, etc.
+* `--device`: device of where to evaluate the model, either `cpu` or `cuda`
+
+#### Rendering
+```
+(venv)> rl_thesis render MODEL_NAME SAVE_MODEL_FILEPATH ENV_NAME NUM_TIMESTEPS
+```
+Where `SAVE_MODEL_FILEPATH` is the filepath to a model saved during training (e.g. either via the model obtaining a new highest return in the evaluation environment or by the checkpointed models), and `NUM_TIMESTEPS` being the number of tiem steps to evaluate the model for.
+
+Options:
+* `--render_mode`: render mode of the environment. Note that this is environment dependent.
+* `--env_normalize`: whether or not to normalize observations/rewards of the environment.
+* `--env_config_file`: JSON configuration file pass to initialization of the environment. Can be used to specify the Numpad configurations with sequence length, number of tiles, etc.
+* `--device`: device of where to evaluate the model, either `cpu` or `cuda`
+
+#### Plotting
+```
+(venv)> rl_thesis plot PLOT_NAME MONITOR_FILEPATH
+```
+Where `PLOT_NAME` specifies the plotting function to use, either (`window_average_return` or `plot_returns`). `MONITOR_FILEPATH` is the filepath to a monitor file containing episode returns created during training/evaluation under the `rewards_dir` or `eval_rewards_dir` (see Training subsection above).
+
+Options:
+* `--labels`: labels to use for the plot, passed as arguments to the plotting function.
+* `--img_file`: filepath of where to store the resulting plot.
+* `--baseline`: value of horizontal line to be plotted for baseline models.
+* `--baseline_label`: name of the baseline model to use in legends.
+
+Note that any additional options are pass to the chosen plotting function.
 
 ## Numpad Environments
 Included in the codebase is an implementation of the Numpad environment (the long-term memory task), with three separate versions:
-1. Discrete control version, with dicrete actions.
-2. Continuous control version, with continuous actions.
-3. Mixed version, with discrete actions mapping onto specific continuous actions.
+1. `numpad_discrete-v1`: Discrete control version, with dicrete actions.
+2. `numpad_continuous-v1`: Continuous control version, with continuous actions.
+3. `numpad_`: Mixed version, with discrete actions mapping onto specific continuous actions.
 
 Code relating to the Numpad environment implementation can be found under: `rl_thesis/environments/`. For a stand-alone implementation of these Numpad environments as a python package we refer to our other repository: https://github.com/Syrlander/numpad-gym.
 
@@ -83,8 +154,3 @@ Run test coverage:
 ```
 (venv)> coverage run -m pytest -v rl_thesis/tests/environment_tests/test_numpad.py && coverage report -i
 ```
-
-
-Github Cleanup ToDo:
-* [ ] README:
-  * [ ] How things can be ran from CLI and the different arguments (describe what they mean)
